@@ -1,11 +1,11 @@
 import React from 'react';
 
-function List_movie(props) {
+function Booking(props) {
     return (
         <div>
-            
+            <h1>Booking</h1>
         </div>
     );
 }
 
-export default List_movie;
+export default Booking;

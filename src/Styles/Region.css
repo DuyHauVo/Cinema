@@ -1,0 +1,10 @@
+.style_region {
+  display: flex;
+  width: 400px;
+  flex-direction: column;
+  margin: auto;
+  margin-bottom: 20px;
+  background-color: rgb(252, 252, 252);
+  padding: 40px;
+  border-radius: 10px;
+}
