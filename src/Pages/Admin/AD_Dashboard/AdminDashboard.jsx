@@ -1,16 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import AdminRoutes from "../../Routes/AdminRoutes";
-import { Outlet } from "react-router-dom";
-import { menu } from "../../Utils/Contants";
+import AdminRoutes from "../../../Routes/AdminRoutes";
+import { menu } from "../../../Utils/Contants";
 function AdminDashboard(props) {
   const [hidden, setHidden] = useState(false);
   const [sidebar, setSidebar] = useState(false);
   const [child, setChild] = useState(null);
   const [arow, setArow] = useState(false);
-  // console.log(menu);
   const handleClick = (element) => {
-    // console.log(element.id);
     if (element.id === child) {
       setChild(null);
     } else {
@@ -18,7 +15,7 @@ function AdminDashboard(props) {
     }
   };
   return (
-    <div >
+    <div>
       <div className="admin md:flex">
         <div className="left md:h-screen p-4 md:pt-10 md:pe-10 ">
           <div
@@ -176,8 +173,10 @@ function AdminDashboard(props) {
               </div>
             </div>
           </div>
-          <div className="right-main">
-            <AdminRoutes />
+          <div className="right-main p-2  ">
+            <div className="bg-slate-100 rounded-lg">
+              <AdminRoutes />
+            </div>
           </div>
         </div>
       </div>

@@ -27,6 +27,7 @@ import {
   updateDocument,
 } from "../../../Services/Service_Firebase";
 import { ContextChairs } from "../../../Context/ContextChair/ChairsContext";
+import Gray_ChairImg from "../../../Assets/logo/logo_chair.png";
 
 function Chair(props) {
   const style = {
@@ -46,6 +47,8 @@ function Chair(props) {
   const [errors, setErrors] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [search, setSearch] = useState("");
+  const [previewImg, setPreviewImg] = useState(null);
+  const [imgUpload, setImgUpload] = useState(null);
   const [chairs, setChairs] = useState({
     name: "",
     type: "",
@@ -72,9 +75,15 @@ function Chair(props) {
       }
       if (chairs.id) {
         const { id, ...NewObjectWithoutId } = chairs;
-        await updateDocument("chairs", chairs.id, NewObjectWithoutId);
+        await updateDocument(
+          "chairs",
+          chairs.id,
+          NewObjectWithoutId,
+          imgUpload,
+          chairs.imgUrl
+        );
       } else {
-        await addDocument("chairs", chairs);
+        await addDocument("chairs", chairs, imgUpload);
       }
     } catch (error) {}
     setChairs({});
@@ -94,6 +103,26 @@ function Chair(props) {
       data.name.toLowerCase().includes(search.toLocaleLowerCase()) ||
       data.type.toLowerCase().includes(search.toLocaleLowerCase())
   );
+
+  // #region add one img
+  const handleChangeImage = (e) => {
+    const selectedImage = e.target.files[0];
+    if (selectedImage) {
+      const render = new FileReader();
+      render.onload = () => {
+        setPreviewImg(render.result);
+      };
+      render.readAsDataURL(selectedImage);
+      setImgUpload(selectedImage);
+    } else {
+      setPreviewImg(null);
+      setImgUpload(null);
+    }
+  };
+  console.log(imgUpload);
+  console.log(previewImg);
+
+  // #region validation
   const Validation = () => {
     const NewError = {};
     NewError.name = chairs.name ? "" : "Please enter name";
@@ -108,11 +137,14 @@ function Chair(props) {
   };
   const handleReset = () => {
     setOpen(true);
-    setErrors({});
+    setChairs({});
+    setPreviewImg(null);
   };
   const handleEdit = (chair) => {
     setOpen(true);
     setChairs(chair);
+    setErrors({});
+    setPreviewImg(chair.imgUrl);
   };
 
   return (
@@ -155,6 +187,9 @@ function Chair(props) {
                 Name Chair
               </TableCell>
               <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                Image
+              </TableCell>
+              <TableCell align="center" sx={{ fontWeight: "bold" }}>
                 Type Chair
               </TableCell>
               <TableCell align="center" sx={{ fontWeight: "bold" }}>
@@ -173,6 +208,13 @@ function Chair(props) {
                     {page * rowsPerPage + index + 1}
                   </TableCell>
                   <TableCell align="center">{chair.name}</TableCell>
+                  <TableCell align="center">
+                    <img
+                      className="w-10 h-auto m-auto"
+                      src={chair.imgUrl}
+                      alt=""
+                    />
+                  </TableCell>
                   <TableCell align="center">
                     {getType_Chairs(chair.type)}
                   </TableCell>
@@ -230,7 +272,7 @@ function Chair(props) {
       >
         <Box component="form" sx={style} onSubmit={handleSubmit}>
           <Typography variant="h6" component="h3" className="pb-3">
-            ADD CHAIRS
+            {chairs.id ? "UPDATE CHAIRS" : "ADD CHAIRS"}
           </Typography>
           {/* <Box className="grid grid-cols-3 gap-3"> */}
           <Box className="grid gap-2">
@@ -258,8 +300,12 @@ function Chair(props) {
                   <MenuItem value={type.id}>{type.name}</MenuItem>
                 ))}
             </Select>
+            <input type="file" onChange={handleChangeImage} />
+            <div className="w-20 h-auto m-auto">
+              <img src={previewImg ? previewImg : `${Gray_ChairImg}`} alt="" />
+            </div>
             <Button type="submit" variant="contained" color="primary">
-              ADD MOVIES
+              {chairs.id ? "UPDATE CHAIRS" : "ADD CHAIRS"}
             </Button>
           </Box>
         </Box>

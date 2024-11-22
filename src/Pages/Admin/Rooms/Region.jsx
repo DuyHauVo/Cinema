@@ -110,7 +110,7 @@ function Region(props) {
   };
   return (
     <>
-      <div className="grid grid-cols-10 gap-5 p-5 ">
+      <div className="grid grid-cols-10 gap-5 p-5">
         {/* Heading spanning all 3 columns */}
         <h1 className="col-span-3 text-3xl font-bold ">List Regions</h1>
 

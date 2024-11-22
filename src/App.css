@@ -51,7 +51,30 @@ li {
       margin-left: 10px;
     }
   }
-  .right {
+}
+.box_tooplit {
+  &:hover .tooplte_time {
+    display: block;
+    border-radius: 10px;
+  }
+  .tooplte_time {
+    background-color: rgb(255, 255, 255);
+    padding: 5px;
+    left: 50%;
+    top: 0px;
+    transform: translate(-50%, -100%);
+    white-space: nowrap;
+    &::after {
+      content: "";
+      width: 10px;
+      height: 10px;
+      transform: translate(-50%, 50%) rotate(45deg);
+      background-color: rgb(255, 255, 255);
+      position: absolute;
+      z-index: 10;
+      bottom: 0;
+      left: 50%;
+    }
   }
 }
 /* end admin */
@@ -76,6 +99,11 @@ li {
 /* end admin */
 .pri {
   background-image: linear-gradient(120deg, #f093fb 0%, #f5576c 100%);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  color: white !important;
+}
+.err {
+  background-image: linear-gradient(120deg, #00ff15 0%, #2b00ff 100%);
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   color: white !important;
 }

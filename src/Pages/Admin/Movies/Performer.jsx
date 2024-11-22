@@ -87,7 +87,6 @@ function Performer(props) {
       }
       if (performer.id) {
         const { id, ...newObjectWithoutId } = performer;
-        // console.log(newObjectWithoutId);
         await updateDocument("performers", performer.id, newObjectWithoutId,performer.imgUrl);
       } else {
         await addDocument("performers", performer, imgUpload);

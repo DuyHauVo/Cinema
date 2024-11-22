@@ -154,7 +154,7 @@ function Location(props) {
           ADD LOCATIONS
         </button>
       </div>
-      <TableContainer sx={{ padding: 1 }}>
+      <TableContainer   sx={{ padding: 1 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>

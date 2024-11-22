@@ -3,10 +3,10 @@ import { Routes, Route } from "react-router-dom";
 import Home from "../Pages/Client/Home";
 import Movie from "../Pages/Client/Movie";
 import Region from "../Pages/Client/Region";
-import Discount from "../Pages/Client/Discount";
-import Helps from "../Pages/Client/Helps";
+import Discount from "../Pages/Client/Support/Discount";
+import Helps from "../Pages/Client/Support/Helps";
 import Menber from "../Pages/Client/Menber";
-import Contact from "../Pages/Client/Contact";
+import Contact from "../Pages/Client/Support/Contact";
 const router = [
   {
     id: 1,

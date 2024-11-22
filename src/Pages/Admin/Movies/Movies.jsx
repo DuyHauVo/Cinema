@@ -15,6 +15,10 @@ import {
   TableBody,
   Table,
   tableCellClasses,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import "../../../Styles/Movie_Admin.css";
 import { ContextPerformers } from "../../../Context/PerformerContext";
@@ -55,7 +59,6 @@ function Movies(props) {
   const [open_performer, setOpen_Performer] = useState(false);
   const [open_category, setOpen_Category] = useState(false);
   const [open_dele, setOpen_dele] = useState(false);
-  const [show_cate, setShowCate] = useState(false);
   const [movie, setMovie] = useState({});
   const [list_cate, setListCate] = useState([]);
   const [list_performer, setList_performer] = useState([]);
@@ -74,12 +77,10 @@ function Movies(props) {
   const handleClose_performer = () => setOpen_Performer(false);
   const handleClose_category = () => setOpen_Category(false);
   const handleClose_Dele = () => setOpen_dele(false);
-  const handleClose_showCate = () => setShowCate(false);
 
   const performer = useContext(ContextPerformers); //Kết nối với contect
   const movies = useContext(ContextMovies);
   const category = useContext(ContextCategories);
-  console.log(movies);
   // #region LẤY DL NHẬP VÀO
   const handleChange = (e) => {
     setMovie({
@@ -126,7 +127,7 @@ function Movies(props) {
     }
   };
 
-  // #region Tim performer
+  // #region Tim để đổi màu performer
   const handlePerformer = (id) => {
     const a = list_performer.find((b) => b === id);
     return a;
@@ -146,7 +147,6 @@ function Movies(props) {
       console.log(`Img URL của performer có id ${id}:`, imgUrl);
     }
   };
-  console.log(list_cate);
   // Lấy hình ảnh qua id
   const getPerformerImgUrl = (id) => {
     const performerData = performer.find((perfor) => perfor.id === id);
@@ -162,6 +162,11 @@ function Movies(props) {
     } else {
       setListCate([...list_cate, id]);
     }
+  };
+  // #region Tìm để đổi màu cate
+  const handleChooseCate = (id) => {
+    const b = list_cate.find((a) => a === id);
+    return b;
   };
   // Lấy categories qua id
   const getCategoriesName = (id) => {
@@ -237,7 +242,7 @@ function Movies(props) {
     <div>
       <div className="grid grid-cols-10 gap-5 p-5 ">
         {/* Heading spanning all 3 columns */}
-        <h1 className="col-span-3 text-3xl font-bold ">List Movie</h1>
+        <h1 className="col-span-3 text-3xl font-bold ">List Movies</h1>
 
         {/* Form with text input and button */}
         <form action="" className="col-span-5 flex items-center space-x-2 mr-5">
@@ -294,10 +299,10 @@ function Movies(props) {
                       <img className="w-20 m-auto" src={mo.imgUrl} alt="" />
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      <Button class="relative group-tolit">
-                        Categories
+                      <Button class="relative group-tolit ">
+                        <p className="font-extrabold">Categories</p>
                         <Box className="absolute hidden tooplit">
-                          {mo.list_cate.map((a) => getCategoriesName(a) + " ")}
+                          {mo.list_cate.map((a) => getCategoriesName(a)) + " "}
                         </Box>
                       </Button>
                     </StyledTableCell>
@@ -382,148 +387,172 @@ function Movies(props) {
       </div>
 
       {/* Start Modal Add */}
-      <Modal
+      <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-        className="p-5"
+        aria-labelledby="dialog-title"
+        aria-describedby="dialog-description"
+        fullWidth
+        maxWidth="lg" // Adjust size as needed
       >
-        <Box component="form" className="style" onSubmit={handleSubmit}>
-          <Typography variant="h6" component="h3" className="pb-3">
-            {movie.id ? "UPDATE MOVIES" : "ADD MOVIES"}
-          </Typography>
-          <Box className="grid grid-cols-3 gap-3">
-            {/* Cột bên trái */}
-            <Box className="grid gap-2">
-              <TextField
-                label="Movie Name"
-                name="name"
-                variant="outlined"
-                value={movie.name}
-                onChange={handleChange}
-                error={!!errors.name}
-                helperText={errors.name}
-              />
-
-              <TextField
-                name="date"
-                variant="outlined"
-                type="date"
-                value={movie.date}
-                onChange={handleChange}
-                error={!!errors.date}
-                helperText={errors.date}
-              />
-
-              <TextField
-                label="Age"
-                name="age"
-                variant="outlined"
-                value={movie.age}
-                onChange={handleChange}
-                error={!!errors.age}
-                helperText={errors.age}
-              />
-              <Button
-                sx={{ marginBottom: "20px" }}
-                variant="contained"
-                onClick={() => setOpen_Category(true)}
-              >
-                Choose Categories
-              </Button>
-            </Box>
-            <Box className="grid gap-2">
-              <TextField
-                label="Duration_Movie"
-                name="duration_Movie"
-                variant="outlined"
-                value={movie.duration_Movie}
-                onChange={handleChange}
-                error={!!errors.duration_Movie}
-                helperText={errors.duration_Movie}
-              />
-              <TextField
-                label="Url_Trailer"
-                name="url_Trailer"
-                variant="outlined"
-                inputProps={{ accept: "video/*" }}
-                value={movie.url_Trailer}
-                onChange={handleChange}
-                error={!!errors.url_Trailer}
-                helperText={errors.url_Trailer}
-              />
-              <TextField
-                label="Director"
-                name="director"
-                variant="outlined"
-                value={movie.director}
-                onChange={handleChange}
-                error={!!errors.director}
-                helperText={errors.director}
-              />
-              <Button
-                sx={{ marginBottom: "20px" }}
-                variant="contained"
-                onClick={() => setOpen_Performer(true)}
-              >
-                Choose Performer
-              </Button>
-            </Box>
-
-            <Box>
-              <div>
-                <input type="file" onChange={HandleChangeImage} />
-              </div>
-              <div className="mt-2 w-48">
-                <img
-                  src={
-                    previewImg
-                      ? previewImg
-                      : `${logo}`
-                  }
-                  alt=""
+        <DialogTitle id="dialog-title">
+          {movie.id ? "UPDATE MOVIES" : "ADD MOVIES"}
+        </DialogTitle>
+        <DialogContent>
+          <Box component="form" className="style" onSubmit={handleSubmit}>
+            <Box className="grid grid-cols-3 gap-3">
+              {/* Left Column */}
+              <Box className="grid gap-2">
+                <TextField
+                  label="Movie Name"
+                  name="name"
+                  variant="outlined"
+                  value={movie.name}
+                  onChange={handleChange}
+                  error={!!errors.name}
+                  helperText={errors.name}
                 />
-              </div>
+                <TextField
+                  name="date"
+                  variant="outlined"
+                  type="date"
+                  value={movie.date}
+                  onChange={handleChange}
+                  error={!!errors.date}
+                  helperText={errors.date}
+                />
+                <TextField
+                  label="Age"
+                  name="age"
+                  variant="outlined"
+                  value={movie.age}
+                  onChange={handleChange}
+                  error={!!errors.age}
+                  helperText={errors.age}
+                />
+                <Button
+                  sx={{ marginBottom: "20px" }}
+                  variant="contained"
+                  onClick={() => setOpen_Category(true)}
+                >
+                  Choose Categories
+                </Button>
+              </Box>
+
+              {/* Middle Column */}
+              <Box className="grid gap-2">
+                <TextField
+                  label="Duration_Movie"
+                  name="duration_Movie"
+                  variant="outlined"
+                  value={movie.duration_Movie}
+                  onChange={handleChange}
+                  error={!!errors.duration_Movie}
+                  helperText={errors.duration_Movie}
+                />
+                <TextField
+                  label="Url_Trailer"
+                  name="url_Trailer"
+                  variant="outlined"
+                  inputProps={{ accept: "video/*" }}
+                  value={movie.url_Trailer}
+                  onChange={handleChange}
+                  error={!!errors.url_Trailer}
+                  helperText={errors.url_Trailer}
+                />
+                <TextField
+                  label="Director"
+                  name="director"
+                  variant="outlined"
+                  value={movie.director}
+                  onChange={handleChange}
+                  error={!!errors.director}
+                  helperText={errors.director}
+                />
+                <Button
+                  sx={{ marginBottom: "20px" }}
+                  variant="contained"
+                  onClick={() => setOpen_Performer(true)}
+                >
+                  Choose Performer
+                </Button>
+              </Box>
+
+              {/* Right Column */}
+              <Box>
+                <div>
+                  <input type="file" onChange={HandleChangeImage} />
+                </div>
+                <div className="mt-2 w-48">
+                  <img src={previewImg ? previewImg : `${logo}`} alt="" />
+                </div>
+              </Box>
+            </Box>
+
+            {/* Categories List */}
+            <Box className="mt-10">
+              <DialogTitle id="dialog-title">CATEGORIES</DialogTitle>
+              <Box className="flex gap-2 flex-wrap ">
+                {list_cate.map((cate) => (
+                  <Box key={cate}>
+                    <Button
+                      className="text-nowrap relative"
+                      variant="contained"
+                      color="primary"
+                    >
+                      {getCategoriesName(cate)}
+                      <i
+                        onClick={() => chooseCategories(cate)}
+                        className="fa-solid fa-xmark absolute icon cursor-pointer"
+                      ></i>
+                    </Button>
+                  </Box>
+                ))}
+              </Box>
+            </Box>
+            <Box className="mt-10 mb-5">
+              <DialogTitle id="dialog-title">PERFORMERS</DialogTitle>
+              {/* Performers List */}
+              <Box className="grid grid-cols-5 gap-3 ">
+                {list_performer.map((perforId) => (
+                  <Box key={perforId} className="relative">
+                    <img
+                      className="w-32 h-36 object-cover"
+                      src={getPerformerImgUrl(perforId)}
+                      alt=""
+                    />
+                    <i
+                      onClick={() => choosePerformer(perforId)}
+                      className="fa-solid fa-xmark"
+                    ></i>
+                  </Box>
+                ))}
+              </Box>
             </Box>
           </Box>
-          <Box className="flex gap-2 flex-wrap">
-            {list_cate.map((cate) => (
-              <>
-                <Box>
-                  <Button
-                    className=" text-nowrap"
-                    variant="contained"
-                    color="primary"
-                  >
-                    {getCategoriesName(cate)}
-                  </Button>
-                </Box>
-              </>
-            ))}
-          </Box>
-          <Box className="grid grid-cols-5 gap-3 mt-3 mb-2">
-            {list_performer.map((perforId) => (
-              <>
-                <Box className="relative">
-                  <img
-                    className="w-32 h-36"
-                    src={getPerformerImgUrl(perforId)}
-                    alt=""
-                  />
-                  <i
-                    onClick={() => choosePerformer(perforId)}
-                    class="fa-solid fa-xmark"
-                  ></i>
-                </Box>
-              </>
-            ))}
-          </Box>
-          <Button type="submit" variant="contained" color="primary">
-            {movie.id ? "UPDATE MOVIES" : "ADD MOVIES"}
-          </Button>
-        </Box>
-      </Modal>
+        </DialogContent>
+        <DialogActions>
+          <div className=" flex w-full gap-2">
+            <Button
+              className="w-full"
+              onClick={handleClose}
+              variant="outlined"
+              color="secondary"
+            >
+              Cancel
+            </Button>
+            <Button
+              className="w-full"
+              type="submit"
+              variant="contained"
+              color="primary"
+            >
+              {movie.id ? "UPDATE MOVIES" : "ADD MOVIES"}
+            </Button>
+          </div>
+        </DialogActions>
+      </Dialog>
+
       {/* End Modal Add */}
 
       {/* Start Modal Trailer*/}
@@ -546,7 +575,7 @@ function Movies(props) {
       </Modal>
       {/* End Modal Trailer*/}
 
-      {/* Start Modal perfomer */}
+      {/* Start Modal show perfomer */}
       <Modal
         open={open_perfor}
         onClose={handleClose_Perfor}
@@ -558,7 +587,11 @@ function Movies(props) {
             {list_performer &&
               list_performer.map((perfor) => (
                 <Box>
-                  <img src={getPerformerImgUrl(perfor)} alt="" />
+                  <img
+                    className="object-cover"
+                    src={getPerformerImgUrl(perfor)}
+                    alt=""
+                  />
                 </Box>
               ))}
           </Box>
@@ -574,16 +607,16 @@ function Movies(props) {
         aria-describedby="modal-modal-description"
       >
         <Box component="form" className="p-10">
-          <Box className="grid grid-cols-4 gap-3 m-auto relative style2">
+          <Box className="grid grid-cols-4 gap-3 m-auto relative style2 overflow-y-auto h-[550px]">
             {performer &&
               performer.map((perfor) => (
                 <Box
                   onClick={() => choosePerformer(perfor.id)}
-                  className={` h-40  ${
+                  className={`h-52  ${
                     handlePerformer(perfor.id) ? "border-2 border-blue-700" : ""
                   }`}
                 >
-                  <img src={perfor.imgUrl} alt="" />
+                  <img className="object-cover" src={perfor.imgUrl} alt="" />
                 </Box>
               ))}
           </Box>
@@ -615,7 +648,12 @@ function Movies(props) {
             {category &&
               category.map((cate) => (
                 <Box onClick={() => chooseCategories(cate.id)}>
-                  <Button className="text-nowrap pri" color="primary">
+                  <Button
+                    className={` text-nowrap  ${
+                      handleChooseCate(cate.id) ? "pri" : "err"
+                    }`}
+                    color="primary"
+                  >
                     {cate.name}
                   </Button>
                 </Box>
@@ -637,34 +675,34 @@ function Movies(props) {
       </Modal>
 
       {/* Start Modal Show Category*/}
-      <Modal
-        open={show_cate}
-        onClose={handleClose_showCate}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box component="form" className="style2">
-          <Box className="flex gap-2 flex-wrap">
-            {category &&
-              category.map((cate) => (
-                <Box onClick={() => chooseCategories(cate.id)}>
-                  <Button className="text-nowrap pri" color="primary">
-                    {cate.name}
-                  </Button>
-                </Box>
-              ))}
-            <h1>show_cate</h1>
-            <Button type="submit" variant="contained" color="primary">
-              CHOOSE CATEGORIES
-            </Button>
+      {/* <Modal
+          open={show_cate}
+          onClose={handleClose_showCate}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box component="form" className="style2">
+            <Box className="flex gap-2 flex-wrap">
+              {category &&
+                category.map((cate) => (
+                  <Box onClick={() => chooseCategories(cate.id)}>
+                    <Button className="text-nowrap pri" color="primary">
+                      {cate.name}
+                    </Button>
+                  </Box>
+                ))}
+              <h1>show_cate</h1>
+              <Button type="submit" variant="contained" color="primary">
+                CHOOSE CATEGORIES
+              </Button>
+            </Box>
+            <Box className="text-center mt-3">
+              <Button type="submit" variant="contained" color="primary">
+                CHOOSE CATEGORIES
+              </Button>
+            </Box>
           </Box>
-          <Box className="text-center mt-3">
-            <Button type="submit" variant="contained" color="primary">
-              CHOOSE CATEGORIES
-            </Button>
-          </Box>
-        </Box>
-      </Modal>
+        </Modal> */}
 
       {/* Button delete */}
       <Button_Delete

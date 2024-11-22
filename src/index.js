@@ -12,6 +12,10 @@ import { RegionsContext } from "./Context/ContextRoom/RegionsContext";
 import { LocationContext } from "./Context/ContextRoom/LocationContext";
 import { ChairsContext } from "./Context/ContextChair/ChairsContext";
 import { TheaterContext } from "./Context/TheaterContext";
+import { RoomContext } from "./Context/ContextRoom/RoomContext";
+import { ServiceContext } from "./Context/ContextService/ServiceContext";
+import Movie_Screening from "./Pages/Admin/Movies/Movie_Screening";
+import { Movie_ScreeningContext } from "./Context/Movie_ScreeningContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -25,7 +29,13 @@ root.render(
                 <LocationContext>
                   <ChairsContext>
                     <TheaterContext>
-                      <App />
+                      <RoomContext>
+                        <ServiceContext>
+                          <Movie_ScreeningContext>
+                            <App />
+                          </Movie_ScreeningContext>
+                        </ServiceContext>
+                      </RoomContext>
                     </TheaterContext>
                   </ChairsContext>
                 </LocationContext>
