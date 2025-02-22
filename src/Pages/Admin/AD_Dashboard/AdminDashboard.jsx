@@ -1,12 +1,16 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import AdminRoutes from "../../../Routes/AdminRoutes";
 import { menu } from "../../../Utils/Contants";
+import avatar from "../../../Assets/avata.jpg";
+import logo from "../../../Assets/logo/hau_admin.png";
+import { ContextLogin } from "../../../Context/LoginContext";
 function AdminDashboard(props) {
   const [hidden, setHidden] = useState(false);
   const [sidebar, setSidebar] = useState(false);
   const [child, setChild] = useState(null);
   const [arow, setArow] = useState(false);
+  const { logout } = useContext(ContextLogin);
   const handleClick = (element) => {
     if (element.id === child) {
       setChild(null);
@@ -17,7 +21,7 @@ function AdminDashboard(props) {
   return (
     <div>
       <div className="admin md:flex">
-        <div className="left md:h-screen p-4 md:pt-10 md:pe-10 ">
+        <div className="left p-4 md:pt-6 md:pe-10 md:h-[100vh] overflow-y-auto">
           <div
             className={`md:mb-4 flex items-center justify-center ${
               sidebar ? "ms-5" : ""
@@ -28,8 +32,10 @@ function AdminDashboard(props) {
               onClick={() => setSidebar(!sidebar)}
             ></i>
             <img
-              class={`h-4 w-44 ms-3 ${sidebar ? "" : "hidden"}`}
-              src="https://demo.bootstrapdash.com/star-admin2-free/template/images/logo.svg"
+              class={`h-[60px] w-[80px] px-2 rounded ms-3 ${
+                sidebar ? "" : "hidden"
+              }`}
+              src={logo}
               alt="Your Company"
             />
           </div>
@@ -91,11 +97,11 @@ function AdminDashboard(props) {
             </Link>
           </ul>
         </div>
-        <div className="right md:flex-1">
+        <div className="right md:flex-1 md:h-[100vh] overflow-y-auto">
           <div className="right-header flex justify-between pt-9">
             <div className="ml-4">
               <h1 className="text-2xl flex">
-                <p className="text-slate-400 ">Good moring, </p>
+                <p className="text-slate-400 ">Welcome, </p>
                 <strong className="text-black ml-1"> Duy Hậu</strong>
               </h1>
               <h3>
@@ -125,11 +131,7 @@ function AdminDashboard(props) {
                     aria-haspopup="true"
                     onClick={() => setHidden(!hidden)}
                   >
-                    <img
-                      class="h-10 w-10 rounded-full"
-                      src="https://scontent.fsgn5-13.fna.fbcdn.net/v/t39.30808-1/448510601_1909189019530161_7770431781770535508_n.jpg?stp=dst-jpg_s200x200&_nc_cat=104&ccb=1-7&_nc_sid=0ecb9b&_nc_ohc=l5C1B_mjaZ4Q7kNvgENr0Xs&_nc_ht=scontent.fsgn5-13.fna&_nc_gid=AIEU8zIETijrxsW2Jw5RhiI&oh=00_AYCdITX7RdiSIWovj0YQtfHHvv2PL9VeF03iwqrHtR40cw&oe=66E36A4B"
-                      alt=""
-                    />
+                    <img class="h-10 w-10 rounded-full" src={avatar} alt="" />
                   </button>
                 </div>
 
@@ -166,6 +168,7 @@ function AdminDashboard(props) {
                     role="menuitem"
                     tabindex="-1"
                     id="user-menu-item-2"
+                    onClick={logout}
                   >
                     Sign out
                   </a>
@@ -173,7 +176,7 @@ function AdminDashboard(props) {
               </div>
             </div>
           </div>
-          <div className="right-main p-2  ">
+          <div className=" p-2">
             <div className="bg-slate-100 rounded-lg">
               <AdminRoutes />
             </div>

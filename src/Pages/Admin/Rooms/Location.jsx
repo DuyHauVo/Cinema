@@ -154,7 +154,7 @@ function Location(props) {
           ADD LOCATIONS
         </button>
       </div>
-      <TableContainer   sx={{ padding: 1 }}>
+      <TableContainer sx={{ padding: 1 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
           <TableHead>
             <TableRow>
@@ -186,6 +186,7 @@ function Location(props) {
                     {getRegionName(location.region)}
                   </TableCell>
                   <TableCell align="center">{location.district}</TableCell>
+
                   <TableCell align="center">
                     <div className="flex justify-center">
                       <div className="mr-2">
@@ -242,21 +243,26 @@ function Location(props) {
             {locations.id ? "UPDATE LOCATION" : "ADD LOCATION"}
           </Typography>
           <Box className=" grid grid-cols-1 gap-2">
-            <InputLabel id="select-label" className="m-auto ">
-              Chosse Region
-            </InputLabel>
-            <Select
-              value={locations.region}
-              onChange={handleChange}
-              name="region"
-              error={!!errors.region}
-              helperText={errors.region}
-            >
-              {regions &&
-                regions.map((region) => (
-                  <MenuItem value={region.id}>{region.name}</MenuItem>
-                ))}
-            </Select>
+            <FormControl fullWidth variant="outlined" margin="normal">
+              <InputLabel id="select-label" className="m-auto ">
+                Chosse Region
+              </InputLabel>
+              <Select
+                label="Chosse Regions"
+                labelId="select-label"
+                value={locations.region}
+                onChange={handleChange}
+                name="region"
+                error={!!errors.region}
+                helperText={errors.region}
+              >
+                {regions &&
+                  regions.map((region) => (
+                    <MenuItem value={region.id}>{region.name}</MenuItem>
+                  ))}
+              </Select>
+            </FormControl>
+
             <TextField
               label="District"
               name="district"

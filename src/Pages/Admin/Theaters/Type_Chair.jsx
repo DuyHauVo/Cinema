@@ -172,7 +172,9 @@ function Type_Chair(props) {
                     {page * rowsPerPage + index + 1}
                   </TableCell>
                   <TableCell align="center">{type.name}</TableCell>
-                  <TableCell align="center">{type.price}</TableCell>
+                  <TableCell align="center">
+                    {parseInt(type.price).toLocaleString("vi-VN") + " đ"}
+                  </TableCell>
                   <TableCell align="center">
                     <div className="flex justify-center">
                       <div className="mr-2">

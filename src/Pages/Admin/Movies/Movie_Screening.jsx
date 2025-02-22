@@ -41,6 +41,7 @@ import {
   updateDocument,
 } from "../../../Services/Service_Firebase";
 import { ContextMovie_Screening } from "../../../Context/Movie_ScreeningContext";
+import { getObjectById } from "../../../Services/Repository";
 
 const inter = {
   movie: "",
@@ -190,18 +191,6 @@ function Movie_Screening(props) {
   });
 
   // #region Get function
-  const getImgTheater = (id) => {
-    const imgTheater = theaters.find((a) => a.id === id);
-    return imgTheater ? imgTheater.imgUrl : null;
-  };
-  const getNameTheater = (id) => {
-    const nameTheater = theaters.find((a) => a.id === id);
-    return nameTheater ? nameTheater.name : null;
-  };
-  const getAdressTheater = (id) => {
-    const adressTheater = theaters.find((a) => a.id === id);
-    return adressTheater ? adressTheater.adress : null;
-  };
   const getMovieDetail = (id, type) => {
     const movie = movies.find((a) => a.id == id);
     return movie
@@ -218,7 +207,6 @@ function Movie_Screening(props) {
   };
   const getTheaterDetail = (roomIds) => {
     const firstRoom = rooms.find((r) => r.id === roomIds[0]);
-    // if (!firstRoom) return null;
     const theater = theaters.find((t) => t.id === firstRoom?.theater);
     return theater ? theater.name : null;
   };
@@ -270,7 +258,7 @@ function Movie_Screening(props) {
     );
     setListTheater(fillteeTheater);
   }, [movie_Screening.district]);
-  
+
   // find show
   useEffect(() => {
     const listtea = theaters.filter((a) => a.id === uefTheater);
@@ -399,7 +387,8 @@ function Movie_Screening(props) {
                       />
                     </StyledTableCell>
                     <StyledTableCell align="center">
-                      {doc.list_room.map((a) => getRoomDetails(a)) + " "}
+                      {doc.list_room.map((a) => getObjectById(a, rooms)?.name) +
+                        " "}
                     </StyledTableCell>
                     <StyledTableCell align="center">
                       {getTheaterDetail(doc.list_room)}
@@ -479,7 +468,7 @@ function Movie_Screening(props) {
             <Box
               component="form"
               className="style_movie_Screening p-2"
-              onSubmit={handleSubmit}
+              // onSubmit={handleSubmit}
             >
               <Box className="grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-1 md:gap-2 gap-3">
                 <Box className="col-span-1 flex gap-3 flex-col">
@@ -504,8 +493,8 @@ function Movie_Screening(props) {
                       error={!!errors.time}
                       helperText={errors.time}
                     />
-                    <button type="button" onClick={addTime}>
-                      <i className="fa-solid fa-circle-plus absolute right-10 top-1/2 -translate-y-1/2 text-sm"></i>
+                    <button type="button" className={`absolute right-10 -translate-y-1/2 ${errors.time ? "top-[calc(50%-12px)]" :"top-1/2" }`} onClick={addTime}>
+                      <i className="fa-solid fa-circle-plus  text-sm"></i>
                     </button>
                   </div>
                   <Box className="border w-full h-auto rounded grid grid-cols-4 gap-2 p-2">
@@ -572,7 +561,7 @@ function Movie_Screening(props) {
                       Choose Movies
                     </Button>
                     {errors.movie && (
-                      <p className="text-red-600 absolute left-1/2 transform -translate-x-1/2">
+                      <p className="text-red-600 absolute left-1/2 transform -translate-x-1/2 whitespace-nowrap" >
                         {errors.movie}
                       </p>
                     )}
@@ -606,7 +595,9 @@ function Movie_Screening(props) {
                             <CardMedia
                               component="img"
                               sx={{ height: "150px" }}
-                              image={getImgTheater(doc.theater)}
+                              image={
+                                getObjectById(doc.theater, theaters)?.imgUrl
+                              }
                             />
                             <CardContent>
                               <Typography
@@ -614,7 +605,7 @@ function Movie_Screening(props) {
                                 component="div"
                                 className="text-center"
                               >
-                                {getNameTheater(doc.theater)}
+                                {getObjectById(doc.theater, theaters)?.name}
                               </Typography>
                               <Typography
                                 variant="body2"
@@ -628,7 +619,7 @@ function Movie_Screening(props) {
                                 color="text.secondary"
                                 textAlign="center"
                               >
-                                {getAdressTheater(doc.theater)}
+                                {getObjectById(doc.theater, theaters)?.adress}
                               </Typography>
                             </CardContent>
                           </Card>
@@ -683,7 +674,7 @@ function Movie_Screening(props) {
               onClick={handleSubmit}
               className="w-1/2"
             >
-              Add
+              {movie_Screening.id ? "UPDATE" : "ADD"}
             </Button>
             <Button
               variant="contained"
@@ -697,18 +688,24 @@ function Movie_Screening(props) {
         </Dialog>
         {/* End Modal Add */}
 
-        {/* Start Modal Add Performer*/}
-        <Modal
+        {/* Start Modal Add Movie*/}
+        <Dialog
           open={open_Movies}
           onClose={handleClose_Movie}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
+          aria-labelledby="dialog-title"
+          aria-describedby="dialog-description"
+          maxWidth="lg"
         >
-          <Box component="form" className="p-10">
-            <Box className="grid lg:grid-cols-4 md:grid-cols-3 gap-3 grid-rows-2 m-auto relative style2 overflow-y-auto h-[550px]">
+          {/* Tiêu đề */}
+          <DialogTitle id="dialog-title">Choose a Movie</DialogTitle>
+
+          {/* Nội dung */}
+          <DialogContent dividers className="p-4">
+            <Box className="grid lg:grid-cols-4 md:grid-cols-3 gap-3 grid-rows-2 m-auto relative p-5">
               {movies &&
                 movies.map((mo) => (
                   <Box
+                    key={mo.id}
                     onClick={() => chooseMoview(mo.id)}
                     sx={{
                       boxShadow:
@@ -723,21 +720,19 @@ function Movie_Screening(props) {
                   </Box>
                 ))}
             </Box>
-            <Box className="text-center mt-3">
-              <Button
-                className="absolute bottom-8"
-                type="submit"
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  setOpen_Movies(false);
-                }}
-              >
-                CHOOSE MOVIE
-              </Button>
-            </Box>
-          </Box>
-        </Modal>
+          </DialogContent>
+
+          {/* Hành động */}
+          <DialogActions>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setOpen_Movies(false)}
+            >
+              CHOOSE MOVIE
+            </Button>
+          </DialogActions>
+        </Dialog>
         {/* Button delete */}
         <Button_Delete
           open_dele={open_dele}

@@ -78,7 +78,8 @@ export const menu = [
         icon: `fa-solid fa-circle dog`,
         title: "Location",
         path: "/location",
-      },{
+      },
+      {
         id: 3,
         icon: `fa-solid fa-circle dog`,
         title: "Room",
@@ -105,65 +106,88 @@ export const menu = [
       },
     ],
   },
+  {
+    id: 6,
+    icon: `fa-solid fa-circle-info`,
+    title: "Help",
+    items: [
+      {
+        id: 1,
+        icon: `fa-solid fa-circle dog`,
+        title: "Endow",
+        path: "/endows",
+      },
+      {
+        id: 2,
+        icon: `fa-solid fa-circle dog`,
+        title: "News",
+        path: "/news",
+      },
+    ],
+  },
 ];
 export const menu_home = [
   {
     id: 1,
-    title: "Trang chủ",
+    title: "Home",
     path: "/",
   },
   {
     id: 2,
-    title: "Phim",
+    title: "Movies",
     path: "/phim",
     child: [
       {
         id: 1,
-        title: "Phim đang chiếu",
+        title: "Movies Showing",
       },
       {
         id: 2,
-        title: "Phim sắp chiếu",
+        title: "Upcoming Movies",
       },
     ],
   },
   {
     id: 3,
-    title: "Lịch chiếu",
+    title: "Showtimes",
     path: "/lichchieu",
   },
   {
     id: 4,
-    title: "Ưu đãi",
+    title: "Endows",
     path: "/uudai",
   },
   {
     id: 5,
-    title: "Hỗ trợ khách hàng",
+    title: "Support",
     path: "/hotrokhachang",
   },
   {
     id: 6,
-    title: "Liên hệ",
+    title: "Contact",
     path: "/lienhe",
   },
   {
     id: 7,
-    title: "Thành viên",
+    title: "Members",
     path: "/thanhvien",
   },
-  {
-    id: 8,
-    icon: "fa-solid fa-user",
-    childs: [
-      {
-        id: 1,
-        title: "Đăng nhập",
-      },
-      {
-        id: 2,
-        title: "Đăng kí",
-      },
-    ],
-  },
+  
 ];
+
+// Constants for roles
+export const ROLES = {
+  ADMIN: "admin", // Quản trị viên cấp cao
+  MODERATOR: "moderator", // Quản trị viên cấp trung (người kiểm duyệt)
+  USER: "user", // Người dùng thông thường
+};
+//
+export const YOUR_SERVICE_ID = "service_4hfmh4e";
+export const YOUR_TEMPLATE_ID = "template_p7jz40g";
+export const YOUR_USER_KEY_ID = "JZwsvhkiya7AksaE1";
+
+export const initialOptions = {
+  "client-id": "AevNTDzPZ-ze3TIFsghO3qhCu2iA34IdS3Ol04QbGofNAAwJrXCg5yKD4S7Gs1rrLhst4JecOnOl9LKo",
+  currency: "USD",
+  intent: "capture"
+};

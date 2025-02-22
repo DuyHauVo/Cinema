@@ -15,7 +15,6 @@ import {
 } from "@mui/material";
 import {
   addDocument,
-  fetchDocuments,
   deleteDocument,
   updateDocument,
 } from "../../Services/Service_Firebase";
@@ -39,12 +38,13 @@ function Categories(props) {
   const [open, setOpen] = useState(false);
   const [open_dele, setOpen_dele] = useState(false);
   const [category, setCategory] = useState({});
-  const list_cate = useContext(ContextCategories);
   const [dele, setDele] = useState(null);
   const [errors, setErrors] = useState({});
   const [page, setPage] = useState(0); // Trang hiện tại
   const [rowsPerPage, setRowsPerPage] = useState(5); // Số lượng dòng mỗi trang
   const [search, setSearch] = useState("");
+  
+  const list_cate = useContext(ContextCategories);
 
   // #region LẤY DL NHẬP VÀO
   const handleChange = (e) => {
@@ -57,7 +57,6 @@ function Categories(props) {
   //#region ADD CATE
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(category);
     // #region EDIT CATEGORI
     try {
       if (!validation()) {

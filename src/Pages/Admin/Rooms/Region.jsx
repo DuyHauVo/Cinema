@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useContext } from "react";
 import {
   Button,
   TablePagination,
   Modal,
-  Paper,
   Typography,
   TextField,
   Box,
@@ -13,12 +12,11 @@ import {
   TableCell,
   TableBody,
   Table,
-  tableCellClasses,
 } from "@mui/material";
 import Button_Delete from "../../Button_Delete";
+import logo from "../../../Assets/logo/vị trí.jpg";
 import {
   addDocument,
-  fetchDocuments,
   deleteDocument,
   updateDocument,
 } from "../../../Services/Service_Firebase";
@@ -32,6 +30,8 @@ function Region(props) {
   const handleClose_Dele = () => setOpen_dele(false);
   const [open, setOpen] = useState(false);
   const [open_dele, setOpen_dele] = useState(false);
+  const [imgUpload, setImgUpload] = useState("");
+  const [previewImg, setPreviewImg] = useState("");
   const [dele, setDele] = useState(null);
   const [errors, setErrors] = useState({});
   const [page, setPage] = useState(0);
@@ -59,9 +59,15 @@ function Region(props) {
       }
       if (regions.id) {
         const { id, ...newObjectWithoutId } = regions;
-        await updateDocument("regions", regions.id, newObjectWithoutId);
+        await updateDocument(
+          "regions",
+          regions.id,
+          newObjectWithoutId,
+          imgUpload,
+          regions.imgUrl
+        );
       } else {
-        await addDocument("regions", regions);
+        await addDocument("regions", regions, imgUpload);
       }
     } catch (error) {
       console.log(error);
@@ -89,14 +95,32 @@ function Region(props) {
   const fillterRegion = list_region.filter((region) =>
     region.name.toLowerCase().includes(search.toLocaleLowerCase())
   );
+  //#region GET IMG
+  const handleChangeImage = (e) => {
+    const selectingImg = e.target.files[0];
+    if (selectingImg) {
+      const render = new FileReader();
+      render.onload = () => {
+        setPreviewImg(render.result);
+      };
+      render.readAsDataURL(selectingImg);
+      setImgUpload(selectingImg);
+    } else {
+      setImgUpload(null);
+      setPreviewImg(null);
+    }
+  };
   const handleReset = () => {
     handleOpen();
     setRegion({});
+    setErrors("");
+    setPreviewImg("");
   };
   const handleResetUpdate = (region) => {
     handleOpen();
     setRegion(region);
     setErrors({});
+    setPreviewImg(region.imgUrl);
   };
   const style = {
     display: "flex",
@@ -148,6 +172,9 @@ function Region(props) {
                 Name Region
               </TableCell>
               <TableCell align="center" sx={{ fontWeight: "bold" }}>
+                Image
+              </TableCell>
+              <TableCell align="center" sx={{ fontWeight: "bold" }}>
                 Action
               </TableCell>
             </TableRow>
@@ -161,6 +188,14 @@ function Region(props) {
                 >
                   <TableCell align="center">{index + 1}</TableCell>
                   <TableCell align="center">{region.name}</TableCell>
+                  <TableCell align="center">
+                    <img
+                      className="w-36 h-auto m-auto"
+                      src={region.imgUrl}
+                      alt=""
+                    />
+                  </TableCell>
+
                   <TableCell align="center">
                     <div className="flex justify-center">
                       <div className="mr-2">
@@ -228,6 +263,10 @@ function Region(props) {
             error={!!errors.name}
             helperText={errors.name}
           />
+          <input type="file" onChange={handleChangeImage} />
+          <div className="w-32 h-auto m-auto">
+            <img src={previewImg ? previewImg : `${logo}`} alt="" />
+          </div>
 
           <Button type="submit" variant="contained" color="primary">
             {regions.id ? "UPDATE REGION" : "ADD REGION"}

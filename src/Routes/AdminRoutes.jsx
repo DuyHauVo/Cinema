@@ -17,6 +17,8 @@ import Lever_Member from "../Pages/Admin/User/Lever_Member";
 import Theater from "../Pages/Admin/Theater";
 import Rating from "../Pages/Admin/Rating";
 import Room from "../Pages/Admin/Rooms/Room";
+import Endows from "../Pages/Admin/Helps/Endows";
+import News from "../Pages/Admin/Helps/News";
 
 function AdminRoutes(props) {
   const elements = [
@@ -99,6 +101,16 @@ function AdminRoutes(props) {
       id: 16,
       path: "/room",
       Component: Room,
+    },
+    {
+      id: 17,
+      path: "/endows",
+      Component: Endows,
+    },
+    {
+      id: 18,
+      path: "/news",
+      Component: News,
     },
   ];
 

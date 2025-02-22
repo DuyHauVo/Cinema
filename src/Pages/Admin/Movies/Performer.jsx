@@ -87,7 +87,12 @@ function Performer(props) {
       }
       if (performer.id) {
         const { id, ...newObjectWithoutId } = performer;
-        await updateDocument("performers", performer.id, newObjectWithoutId,performer.imgUrl);
+        await updateDocument(
+          "performers",
+          performer.id,
+          newObjectWithoutId,
+          performer.imgUrl
+        );
       } else {
         await addDocument("performers", performer, imgUpload);
       }
@@ -112,7 +117,7 @@ function Performer(props) {
     NewError.information = performer.information
       ? ""
       : "Vui lòng nhập mô tả của diễn viên";
-    NewError.img = performer.img ? "" : "Vui lòng chọn ảnh";
+    NewError.imgUpload = imgUpload ? "" : "Vui lòng chọn ảnh";
     setErrors(NewError);
     return !NewError.name && !NewError.information;
   };
@@ -127,6 +132,7 @@ function Performer(props) {
   const handleReset = () => {
     setPreviewImg(null);
     setPerformer({});
+    setErrors("");
   };
   const handleEdit = (perfor) => {
     handleOpen();
@@ -286,22 +292,28 @@ function Performer(props) {
                 error={!!errors.information}
                 helperText={errors.information}
               />
-              <TextField
-                name="img"
-                variant="outlined"
-                type="file"
-                onChange={handleImageChange}
-                error={!!errors.img}
-                helperText={errors.img}
-              />
+              <div className="relative mb-4 w-full">
+                <TextField
+                  name="img"
+                  variant="outlined"
+                  type="file"
+                  fullWidth
+                  onChange={handleImageChange}
+                  error={!!errors.img}
+                  helperText={errors.img}
+                />
+                {errors && (
+                  <p className="text-red-600 absolute left-1/2 transform -translate-x-1/2 text-xs">
+                    {errors.imgUpload}
+                  </p>
+                )}
+              </div>
             </Box>
-            <div>
-              <img
-                className="object-cover h-80"
-                src={previewImg ? previewImg : `${logo}`}
-                alt=""
-              />
-            </div>
+            <img
+              className="object-cover h-80"
+              src={previewImg ? previewImg : `${logo}`}
+              alt=""
+            />
           </div>
           <Button type="submit" variant="contained" color="primary">
             {performer.id ? "UPDATE PERFORMER" : "ADD PERFORMERS"}

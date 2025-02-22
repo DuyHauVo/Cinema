@@ -20,7 +20,7 @@ import {
   Card,
   CardContent,
   CardMedia,
-  CardActions,
+  FormControl,
   tableCellClasses,
 } from "@mui/material";
 
@@ -419,36 +419,46 @@ function Room() {
                 error={!!errors.name}
                 helperText={errors.name}
               />
-              <InputLabel id="select-label" className="m-auto ">
-                Chosse Region
-              </InputLabel>
-              <Select
-                value={rooms.region}
-                name="region"
-                onChange={handleChange}
-                error={!!errors.region}
-                helperText={errors.region}
-              >
-                {regions &&
-                  regions.map((regi) => (
-                    <MenuItem value={regi.id}>{regi.name}</MenuItem>
-                  ))}
-              </Select>
-              <InputLabel id="select-label" className="m-auto ">
-                Chosse Locations
-              </InputLabel>
-              <Select
-                onChange={handleChange}
-                value={rooms.district}
-                name="district"
-                error={!!errors.district}
-                helperText={errors.district}
-              >
-                {filterLocal &&
-                  filterLocal.map((data) => (
-                    <MenuItem value={data.id}>{data.district}</MenuItem>
-                  ))}
-              </Select>
+
+              <FormControl fullWidth variant="outlined" margin="normal">
+                <InputLabel id="select-label" className="m-auto">
+                  Chosse Region
+                </InputLabel>
+                <Select
+                  label="Chosse Region"
+                  labelId="select-label"
+                  value={rooms.region}
+                  name="region"
+                  onChange={handleChange}
+                  error={!!errors.region}
+                  helperText={errors.region}
+                >
+                  {regions &&
+                    regions.map((regi) => (
+                      <MenuItem value={regi.id}>{regi.name}</MenuItem>
+                    ))}
+                </Select>
+              </FormControl>
+
+              <FormControl fullWidth variant="outlined" margin="normal">
+                <InputLabel id="select-label" className="m-auto ">
+                  Chosse Locations
+                </InputLabel>
+                <Select
+                  label="Chosse Locations"
+                  labelId="select-label"
+                  onChange={handleChange}
+                  value={rooms.district}
+                  name="district"
+                  error={!!errors.district}
+                  helperText={errors.district}
+                >
+                  {filterLocal &&
+                    filterLocal.map((data) => (
+                      <MenuItem value={data.id}>{data.district}</MenuItem>
+                    ))}
+                </Select>
+              </FormControl>
             </Box>
             <Box className="grid col-span-2  pr-3">
               <div className="flex gap-4 p-2">

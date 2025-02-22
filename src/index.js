@@ -16,34 +16,55 @@ import { RoomContext } from "./Context/ContextRoom/RoomContext";
 import { ServiceContext } from "./Context/ContextService/ServiceContext";
 import Movie_Screening from "./Pages/Admin/Movies/Movie_Screening";
 import { Movie_ScreeningContext } from "./Context/Movie_ScreeningContext";
+import { NewContext } from "./Context/ContextHelp/NewContext";
+import { EndowContext } from "./Context/ContextHelp/EndowContext";
+import { UserConetxt } from "./Context/Client/UserConetxt";
+import { NotificationProvider } from "./Context/Client/NotificationProvider";
+import { LoginContext } from "./Context/LoginContext";
+import { BookingContext } from "./Context/BookingContext";
+import { TicketContext } from "./Context/Client/OldTicket/TicketContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <BrowserRouter>
-      <PerformerContext>
-        <CategoryContext>
-          <MoviesContext>
-            <RegionsContext>
-              <Type_ChairsContext>
-                <LocationContext>
-                  <ChairsContext>
-                    <TheaterContext>
-                      <RoomContext>
-                        <ServiceContext>
-                          <Movie_ScreeningContext>
-                            <App />
-                          </Movie_ScreeningContext>
-                        </ServiceContext>
-                      </RoomContext>
-                    </TheaterContext>
-                  </ChairsContext>
-                </LocationContext>
-              </Type_ChairsContext>
-            </RegionsContext>
-          </MoviesContext>
-        </CategoryContext>
-      </PerformerContext>
+      <LoginContext>
+        <NotificationProvider>
+          <PerformerContext>
+            <CategoryContext>
+              <MoviesContext>
+                <RegionsContext>
+                  <Type_ChairsContext>
+                    <LocationContext>
+                      <ChairsContext>
+                        <TheaterContext>
+                          <RoomContext>
+                            <ServiceContext>
+                              <Movie_ScreeningContext>
+                                <NewContext>
+                                  <EndowContext>
+                                    <UserConetxt>
+                                      <BookingContext>
+                                        <TicketContext>
+                                          <App />
+                                        </TicketContext>
+                                      </BookingContext>
+                                    </UserConetxt>
+                                  </EndowContext>
+                                </NewContext>
+                              </Movie_ScreeningContext>
+                            </ServiceContext>
+                          </RoomContext>
+                        </TheaterContext>
+                      </ChairsContext>
+                    </LocationContext>
+                  </Type_ChairsContext>
+                </RegionsContext>
+              </MoviesContext>
+            </CategoryContext>
+          </PerformerContext>
+        </NotificationProvider>
+      </LoginContext>
     </BrowserRouter>
   </React.StrictMode>
 );

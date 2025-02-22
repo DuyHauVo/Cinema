@@ -393,13 +393,13 @@ function Movies(props) {
         aria-labelledby="dialog-title"
         aria-describedby="dialog-description"
         fullWidth
-        maxWidth="lg" // Adjust size as needed
+        maxWidth="lg"
       >
         <DialogTitle id="dialog-title">
           {movie.id ? "UPDATE MOVIES" : "ADD MOVIES"}
         </DialogTitle>
         <DialogContent>
-          <Box component="form" className="style" onSubmit={handleSubmit}>
+          <Box component="form" className="style">
             <Box className="grid grid-cols-3 gap-3">
               {/* Left Column */}
               <Box className="grid gap-2">
@@ -546,6 +546,7 @@ function Movies(props) {
               type="submit"
               variant="contained"
               color="primary"
+              onClick={handleSubmit}
             >
               {movie.id ? "UPDATE MOVIES" : "ADD MOVIES"}
             </Button>
@@ -576,27 +577,26 @@ function Movies(props) {
       {/* End Modal Trailer*/}
 
       {/* Start Modal show perfomer */}
-      <Modal
-        open={open_perfor}
-        onClose={handleClose_Perfor}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box component="form" className="p-10">
-          <Box className="grid grid-cols-4 gap-3 m-auto relative style2">
+      <Dialog open={open_perfor} onClose={handleClose_Perfor} fullWidth maxWidth="md">
+      <DialogTitle id="dialog-title">Performers</DialogTitle>
+      <DialogContent>
+        <Box component="form" className="p-5">
+          <Box className="grid grid-cols-4 gap-3 m-auto relative">
             {list_performer &&
-              list_performer.map((perfor) => (
-                <Box>
+              list_performer.map((perfor, index) => (
+                <Box key={index}>
                   <img
                     className="object-cover"
                     src={getPerformerImgUrl(perfor)}
-                    alt=""
+                    alt="Performer"
                   />
                 </Box>
               ))}
           </Box>
         </Box>
-      </Modal>
+      </DialogContent>
+    </Dialog>
+    
       {/* End Modal Cate*/}
 
       {/* Start Modal Add Performer*/}
@@ -673,36 +673,6 @@ function Movies(props) {
           </Box>
         </Box>
       </Modal>
-
-      {/* Start Modal Show Category*/}
-      {/* <Modal
-          open={show_cate}
-          onClose={handleClose_showCate}
-          aria-labelledby="modal-modal-title"
-          aria-describedby="modal-modal-description"
-        >
-          <Box component="form" className="style2">
-            <Box className="flex gap-2 flex-wrap">
-              {category &&
-                category.map((cate) => (
-                  <Box onClick={() => chooseCategories(cate.id)}>
-                    <Button className="text-nowrap pri" color="primary">
-                      {cate.name}
-                    </Button>
-                  </Box>
-                ))}
-              <h1>show_cate</h1>
-              <Button type="submit" variant="contained" color="primary">
-                CHOOSE CATEGORIES
-              </Button>
-            </Box>
-            <Box className="text-center mt-3">
-              <Button type="submit" variant="contained" color="primary">
-                CHOOSE CATEGORIES
-              </Button>
-            </Box>
-          </Box>
-        </Modal> */}
 
       {/* Button delete */}
       <Button_Delete
