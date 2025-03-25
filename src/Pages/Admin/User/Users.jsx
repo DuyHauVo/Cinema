@@ -88,7 +88,6 @@ function Users(props) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("user", user.id);
     try {
       const { id, ...newObjectWithoutId } = user;
       await updateDocument(

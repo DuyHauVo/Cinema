@@ -36,3 +36,8 @@ export const getShowWilltimes = (data) => {
     return showtimeDate > twoDaysLater;
   });
 };
+
+export const filterById = (data,id,title) => {
+
+    return data?.filter(e => e[title] == id)
+}

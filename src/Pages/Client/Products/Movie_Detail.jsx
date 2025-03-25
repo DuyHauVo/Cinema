@@ -31,19 +31,25 @@ function Movie_Detail() {
   const { booking, setBooking } = useContext(ContextBooking);
 
   const navigation = useNavigate();
-
+  const idMovie = getObjectById(id, listMovie_Screening)?.movie;
+  console.log(idMovie);
   useEffect(() => {
-    const selectedMovie = listMovie.find((doc) => doc.id === id);
+    const selectedMovie = listMovie.find((doc) => doc.id === idMovie);
     setMovie_Detail(selectedMovie || null);
   }, [id, listMovie]);
 
   useEffect(() => {
     const localItem = getShowtimes(listMovie_Screening).filter(
-      (doc) => doc.movie === id
+      (doc) => doc.movie === idMovie
     );
     setLocals(localItem);
   }, [id]);
 
+  const movie_Screening_old = listObjectById_Movie(
+    booking.id_movie,
+    listMovie_Screening,
+    "movie"
+  )?.id;
   const localFilter = locals?.map(
     (b) =>
       getObjectById(
@@ -70,12 +76,16 @@ function Movie_Detail() {
       setChild(doc);
     }
   };
-
   const handleTicket = (time) => {
-    setBooking({ ...booking, id_movie: id, time: time });
+    setBooking({
+      ...booking,
+      id_movie: idMovie,
+      id_movie_screening: id,
+      time: time,
+    });
     navigation(`/oder_ticket`);
   };
-
+  console.log(booking);
   if (!movie_detail) {
     return (
       <p className="text-center text-lg">

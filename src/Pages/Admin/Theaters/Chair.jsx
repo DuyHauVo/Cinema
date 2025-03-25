@@ -119,8 +119,6 @@ function Chair(props) {
       setImgUpload(null);
     }
   };
-  console.log(imgUpload);
-  console.log(previewImg);
 
   // #region validation
   const Validation = () => {

@@ -1,26 +1,11 @@
-import React, { useContext, useState } from "react";
-import {
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Typography,
-  CardActions,
-  Grid,
-} from "@mui/material";
-import {
-  listObjectById,
-  getShowtimes,
-  listObjectById_Movie,
-  getShowWilltimes,
-} from "../../../Services/Repository";
+import React, { useContext } from "react";
+import { Card, CardContent, CardMedia, Typography, Grid } from "@mui/material";
+import { listObjectById_Movie } from "../../../Services/Repository";
 import { ContextMovie_Screening } from "../../../Context/Movie_ScreeningContext";
 import { ContextMovies } from "../../../Context/MoviesContext";
-import Movie_Detail from "./Movie_Detail";
 import { useNavigate } from "react-router-dom";
 
 function Movie(props) {
-  const [showall_movies, setShowall_Movies] = useState(true);
   const listMovie_Screening = useContext(ContextMovie_Screening);
   const listMovie = useContext(ContextMovies);
   const navigate = useNavigate();
@@ -31,6 +16,7 @@ function Movie(props) {
       listMovie_Screening.map((element) => [element.movie, element])
     ).values()
   );
+
   const handleDetail = (id) => {
     navigate(`/detail/${id}`);
   };
@@ -49,7 +35,7 @@ function Movie(props) {
                 md={6}
                 lg={3}
                 key={product.id}
-                onClick={() => handleDetail(movieDetails.id)}
+                onClick={() => handleDetail(product.id)}
               >
                 <Card className="movie">
                   <CardMedia

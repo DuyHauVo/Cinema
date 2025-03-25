@@ -41,11 +41,13 @@ import {
   updateDocument,
 } from "../../../Services/Service_Firebase";
 import { ContextMovie_Screening } from "../../../Context/Movie_ScreeningContext";
-import { getObjectById } from "../../../Services/Repository";
+import { filterById, getObjectById } from "../../../Services/Repository";
 
 const inter = {
   movie: "",
   date: "",
+  theater: "",
+  room: "",
 };
 // #region Start MUI
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
@@ -493,7 +495,13 @@ function Movie_Screening(props) {
                       error={!!errors.time}
                       helperText={errors.time}
                     />
-                    <button type="button" className={`absolute right-10 -translate-y-1/2 ${errors.time ? "top-[calc(50%-12px)]" :"top-1/2" }`} onClick={addTime}>
+                    <button
+                      type="button"
+                      className={`absolute right-10 -translate-y-1/2 ${
+                        errors.time ? "top-[calc(50%-12px)]" : "top-1/2"
+                      }`}
+                      onClick={addTime}
+                    >
                       <i className="fa-solid fa-circle-plus  text-sm"></i>
                     </button>
                   </div>
@@ -561,7 +569,7 @@ function Movie_Screening(props) {
                       Choose Movies
                     </Button>
                     {errors.movie && (
-                      <p className="text-red-600 absolute left-1/2 transform -translate-x-1/2 whitespace-nowrap" >
+                      <p className="text-red-600 absolute left-1/2 transform -translate-x-1/2 whitespace-nowrap">
                         {errors.movie}
                       </p>
                     )}
@@ -578,9 +586,14 @@ function Movie_Screening(props) {
 
                 <Box className="lg:col-span-2 md:col-span-1 pr-3">
                   <div className="grid lg:grid-cols-3 md:grid-cols-1 gap-4 p-2">
-                    {show_list_room.length > 0 ? (
+                    {filterById(room, movie_Screening.theater, "theater")
+                      .length > 0 ? (
                       <>
-                        {room.map((doc) => (
+                        {filterById(
+                          room,
+                          movie_Screening.theater,
+                          "theater"
+                        ).map((doc) => (
                           <Card
                             key={doc.id}
                             className="grid col-span-1"
@@ -626,15 +639,24 @@ function Movie_Screening(props) {
                         ))}
                         <i
                           class="fa-solid fa-circle-arrow-left text-3xl ml-2 text-cyan-700 "
-                          onClick={() => setShow_List_Room([])}
+                          onClick={() =>
+                            setMovie_Screening({
+                              ...movie_Screening,
+                              theater: "",
+                            })
+                          }
                         ></i>
                       </>
                     ) : (
                       listTheater.map((doc) => (
                         <Card
-                          onChange={() => handleChange(doc.id)}
                           value={movie_Screening.theater}
-                          onClick={() => chooseTheater(doc.id)}
+                          onClick={() =>
+                            setMovie_Screening({
+                              ...movie_Screening,
+                              theater: doc.id,
+                            })
+                          }
                         >
                           <CardMedia
                             component="img"

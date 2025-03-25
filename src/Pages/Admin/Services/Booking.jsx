@@ -26,13 +26,16 @@ function Booking(props) {
   const [open_dele, setOpen_dele] = useState(false);
   const handleClose_Dele = () => setOpen_dele(false);
 
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [search, setSearch] = useState("");
+
   const oldTicket = useContext(ContextTicket);
   const services = useContext(ContextServices);
   const movies = useContext(ContextMovies);
   const rooms = useContext(ContextRooms);
   const users = useContext(ContextUsers);
   const chairs = useContext(ContextChairs);
-  console.log(oldTicket);
 
   const handleDelete = async () => {
     try {
@@ -53,7 +56,7 @@ function Booking(props) {
             type="text"
             className="border border-gray-300 rounded px-4 py-2 w-full"
             placeholder="Search Ticket"
-            // onChange={(e) => setSearch(e.target.value)}
+            onChange={(e) => setSearch(e.target.value)}
           />
           <button className="bg-blue-500 text-white px-5 py-2 rounded">
             <i className="fa-solid fa-magnifying-glass"></i>
@@ -97,100 +100,100 @@ function Booking(props) {
                   Chairs
                 </TableCell>
                 <TableCell align="center" sx={{ fontWeight: "bold" }}>
-                  Status
+                  Total
                 </TableCell>
                 <TableCell align="center" sx={{ fontWeight: "bold" }}>
                   Action
                 </TableCell>
               </TableRow>
             </TableHead>
-            {oldTicket.map((doc) => (
-              <TableBody>
-                <TableRow
-                  // key={index}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell align="center">
-                    <img
-                      className="w-20 h-auto mx-auto"
-                      src={getObjectById(doc.id_movie, movies)?.imgUrl}
-                      alt=""
-                    />
-                  </TableCell>
-                  <TableCell align="center">
-                    {getObjectById(doc.handleRooms, rooms)?.name}
-                  </TableCell>
-                  <TableCell align="center">
-                    {doc.date.toDate().toDateString() + " - " + doc.time}
-                  </TableCell>
-                  <TableCell align="center">
-                    {getObjectById(doc.id_user, users)?.email}
-                  </TableCell>
-                  <TableCell align="center">
-                    <Button class="relative group-tolit ">
-                      <p className="font-bold">Combo</p>
-                      <Box className="absolute hidden tooplit">
-                        {doc.combo.map(
-                          (a) => getObjectById(a.id, services)?.name
-                        )}
-                      </Box>
-                    </Button>
-                  </TableCell>
-                  <TableCell align="center">
-                    {doc.listChairs.map(
-                      (a) => getObjectById(a, chairs)?.name + ", "
-                    )}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex gap-2 justify-center">
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" />
-                        <div className="w-10 h-10 bg-rose-500 text-white flex items-center justify-center text-xl font-bold rounded-full shadow-md  peer-checked:text-black transition-all duration-300">
-                          ✖️
-                        </div>
-                      </label>
-                      <label className="relative inline-flex items-center cursor-pointer">
-                        <input type="checkbox" className="sr-only peer" />
-                        <div className="w-10 h-10 bg-emerald-500 text-white flex items-center justify-center text-xl font-bold rounded-full shadow-md  peer-checked:text-black transition-all duration-300">
-                          ✔️
-                        </div>
-                      </label>
-                    </div>
-                  </TableCell>
-                  <TableCell align="center">
-                    <div className="flex justify-center">
-                      <div className="mr-3">
-                        <Button
+            {oldTicket
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((doc) => (
+                <TableBody>
+                  <TableRow
+                    // key={index}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell align="center">
+                      <img
+                        className="w-20 h-auto mx-auto"
+                        src={getObjectById(doc.id_movie, movies)?.imgUrl}
+                        alt=""
+                      />
+                    </TableCell>
+                    <TableCell align="center">
+                      {getObjectById(doc.handleRooms, rooms)?.name}
+                    </TableCell>
+                    <TableCell align="center">
+                      {doc.date.toDate().toDateString() + " - " + doc.time}
+                    </TableCell>
+                    <TableCell align="center">
+                      {getObjectById(doc.id_user, users)?.email}
+                    </TableCell>
+                    <TableCell align="center">
+                      <Button class="relative group-tolit ">
+                        <p className="font-bold">Combo</p>
+                        <Box className="absolute hidden tooplit">
+                          {doc.combo.map(
+                            (a) => getObjectById(a.id, services)?.name
+                          )}
+                        </Box>
+                      </Button>
+                    </TableCell>
+                    <TableCell align="center">
+                      {doc.listChairs.map(
+                        (a) => getObjectById(a, chairs)?.name + ", "
+                      )}
+                    </TableCell>
+                    <TableCell>
+                      {parseInt(
+                        doc.priceCombo + doc.priceTicket
+                      ).toLocaleString("vi-VN") + "đ"}
+                    </TableCell>
+                    <TableCell align="center">
+                      <div className="flex justify-center">
+                        <div className="mr-3">
+                          {/* <Button
                           variant="contained"
                           color="success"
                           onClick={() => {
-                            //   handleResetUpdate();
-                            //   setCategory(cate);
                           }}
                         >
-                          {/* icon edit */}
                           <i class="fa-solid fa-pen-to-square p-2"></i>
-                        </Button>
+                        </Button> */}
+                        </div>
+                        <div className="mr-3">
+                          <Button
+                            variant="contained"
+                            color="error"
+                            onClick={() => {
+                              setOpen_dele(true);
+                              setDele(doc.id);
+                            }}
+                          >
+                            {/* icon delete */}
+                            <i class="fa-solid fa-trash p-2"></i>
+                          </Button>
+                        </div>
                       </div>
-                      <div className="mr-3">
-                        <Button
-                          variant="contained"
-                          color="error"
-                          onClick={() => {
-                            setOpen_dele(true);
-                            setDele(doc.id);
-                          }}
-                        >
-                          {/* icon delete */}
-                          <i class="fa-solid fa-trash p-2"></i>
-                        </Button>
-                      </div>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            ))}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              ))}
           </Table>
+          <TablePagination
+            rowsPerPageOptions={[10, 20]}
+            page={page}
+            rowsPerPage={rowsPerPage}
+            count={oldTicket.length}
+            component="div"
+            onPageChange={(e, newpage) => setPage(newpage)}
+            onRowsPerPageChange={(event) => {
+              setRowsPerPage(parseInt(event.target.value, 10));
+              setPage(0);
+            }}
+          />
         </TableContainer>
         <Button_Delete
           open_dele={open_dele}

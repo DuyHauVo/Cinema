@@ -73,7 +73,6 @@ function Update_PW({
       if (!Validation()) {
         return;
       }
-      console.log(userByEmail);
       if (userByEmail) {
         await updateDocument("accounts", userByEmail, user_New_Password);
         showNotification("Code match", "success");

@@ -91,10 +91,6 @@ function AdminDashboard(props) {
               <i class="fa-solid fa-video"></i>
               <p className={sidebar ? "" : "hidden"}>Theater</p>
             </Link>
-            <Link to={"/rating"} className="Li">
-              <i class="fa-solid fa-star"></i>
-              <p className={sidebar ? "" : "hidden"}>Rating</p>
-            </Link>
           </ul>
         </div>
         <div className="right md:flex-1 md:h-[100vh] overflow-y-auto">

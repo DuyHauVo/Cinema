@@ -51,8 +51,6 @@ function FilePay(props) {
   const theater = useContext(ContextTheaters);
   const location = useContext(ContextLocations);
   const chairs = useContext(ContextChairs);
-  const type_Chairs = useContext(ContextType_Chairs);
-  const services = useContext(ContextServices);
   const movie_Screening = useContext(ContextMovie_Screening);
   const { isLogin } = useContext(ContextLogin);
   const showAlert = useNotification();
@@ -72,7 +70,6 @@ function FilePay(props) {
   )?.date;
 
   useEffect(() => {
-    console.log(booking.priceTicket);
     totalUseRef.current = booking.priceTicket + booking.priceCombo;
   }, [booking]);
 
@@ -295,7 +292,6 @@ function FilePay(props) {
               style={{ layout: "vertical" }}
               createOrder={(data, actions) => {
                 const total = (totalUseRef.current / 24000).toFixed(2);
-                console.log(total);
                 return actions.order.create({
                   purchase_units: [
                     {

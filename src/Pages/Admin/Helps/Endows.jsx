@@ -216,12 +216,16 @@ function Endows(props) {
                   <TableCell align="center">{doc.name}</TableCell>
                   <TableCell align="center">
                     <img
-                      className="w-full h-auto m-auto"
+                      className="w-32 h-auto m-auto"
                       src={doc.imgUrl}
                       alt="ảnh"
                     />
                   </TableCell>
-                  <TableCell align="center">{doc.content}</TableCell>
+                  <TableCell align="center">
+                    {doc.content.length > 30
+                      ? `${doc.content.substring(0, 30)}...`
+                      : doc.content}
+                  </TableCell>
 
                   <TableCell align="center" className="flex-wrap">
                     {doc.date}

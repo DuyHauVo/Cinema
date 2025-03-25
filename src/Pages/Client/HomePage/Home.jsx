@@ -8,21 +8,21 @@ import {
   CardContent,
   CardMedia,
   Typography,
-  CardActions,
   Grid,
 } from "@mui/material";
 import SlideNews from "../SlideShow/SlideNews";
 import { ContextMovie_Screening } from "../../../Context/Movie_ScreeningContext";
 import {
-  listObjectById,
   listObjectById_Movie,
   getShowtimes,
   getShowWilltimes,
 } from "../../../Services/Repository";
 import { ContextMovies } from "../../../Context/MoviesContext";
 import SlideEndows from "../SlideShow/SlideEndows";
+import { useNavigate } from "react-router-dom";
 
 function Home(props) {
+  const navigate = useNavigate();
   const listMovie_Screening = useContext(ContextMovie_Screening);
   const listMovie = useContext(ContextMovies);
 
@@ -38,7 +38,9 @@ function Home(props) {
       filteredShowtimes.map((element) => [element.movie, element])
     ).values()
   );
-
+  const handClick = (id) => {
+    navigate(`/detail/${id}`);
+  };
   return (
     <div>
       <SlideHome />
@@ -88,9 +90,15 @@ function Home(props) {
               listMovie,
               "id"
             );
-
             return (
-              <Grid item xs={12} md={6} lg={3} key={product.id}>
+              <Grid
+                item
+                xs={12}
+                md={6}
+                lg={3}
+                key={product.id}
+                onClick={() => handClick(movieDetails.id)}
+              >
                 <Card className="movie">
                   <CardMedia
                     component="img"

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Routes, Route } from "react-router-dom";
 // import { Routers, Route } from "react-router-dom";
-import Dashboard from "../Pages/Admin/Dashboard";
+import Dashboard from "../Pages/Admin/AD_Dashboard/Dashboard";
 import Categories from "../Pages/Admin/Categories";
 import Movies from "../Pages/Admin/Movies/Movies";
 import Movie_Screening from "../Pages/Admin/Movies/Movie_Screening";
@@ -86,11 +86,6 @@ function AdminRoutes(props) {
       id: 13,
       path: "/theater",
       Component: Theater,
-    },
-    {
-      id: 14,
-      path: "/rating",
-      Component: Rating,
     },
     {
       id: 15,

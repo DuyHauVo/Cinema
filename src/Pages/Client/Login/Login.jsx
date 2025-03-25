@@ -68,51 +68,38 @@ function Login({
       [e.target.name]: e.target.value,
     });
   };
+
   const Validation = () => {
     const newErrors = {};
-
     // Kiểm tra xem email và password có được nhập hay không
     newErrors.email = user.email ? "" : "Please Enter Email";
     newErrors.password = user.password ? "" : "Please Enter Password";
-
-    // Tìm người dùng khớp trong UserList
-    const userExample = UserList.find(
-      (e) =>
-        e.email === user.email && bcrypt.compareSync(user.password, e.password)
-    );
-
-    if (user.email && user.password) {
-      if (userExample) {
-        // Đã tìm thấy người dùng khớp
-        saveLoCal(userExample);
-      } else {
-        // Không tìm thấy người dùng khớp
-        newErrors.email = "Invalid email, please re-enter";
-        newErrors.password = "Wrong password, please re-enter";
-      }
-      return;
-    }
-
-    // Cập nhật lỗi vào state
     setErrors(newErrors);
-
     // Trả về true nếu không có lỗi
-    return Object.values(newErrors).some((e) => e !== "");
+    return Object.values(newErrors).every((e) => e === "");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!Validation()) {
-      showNotification("Login successful", "success");
-      handleClose();
-      setUser("");
-      setErrors("");
-    } else {
-      console.log("Có lỗi:", Validation());
+      console.log("vsfvsv");
+        return;
+    } 
+        // Tìm người dùng khớp trong UserList
+     const userExample = UserList.find((e) => e.email === user.email && bcrypt.compareSync(user.password, e.password));
+     if(!userExample) {
       showNotification("Login failed, please login again", "error");
-    }
-  };
+      return
+     }
+     saveLoCal(userExample);
+     showNotification("Login thanh cong", "success");
+     handleClose();
+     setUser({
+      email: "",
+      password: "",
+    });
+    };
   // Google sign-in
   const signInWithGoogle = async () => {
     try {

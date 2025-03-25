@@ -87,6 +87,7 @@ function Oder_ticket(props) {
   const getchairs = (id) => {
     return idChairs.find((e) => e === id);
   };
+
   const handleCheckChair = (id) => {
     const date_Screenig = listObjectById_Movie(
       booking.id_movie,
@@ -94,16 +95,16 @@ function Oder_ticket(props) {
       "movie"
     )?.date;
 
-    return createTickets.some(
+    return createTickets?.some(
       (e) =>
+        e.id_movie_screening === booking.id_movie_screening &&
         e.id_movie === booking.id_movie &&
-        convertTimestamps(e) === date_Screenig &&
         e.time === booking.time &&
         e.handleRooms == booking?.handleRooms &&
         e.listChairs.some((e) => e === id)
     );
   };
-
+  console.log(booking);
   function convertTimestamps(item) {
     if (item.date && item.date.seconds) {
       const date = new Date(item.date.seconds * 1000);
@@ -117,7 +118,6 @@ function Oder_ticket(props) {
   return (
     <div>
       <div className=" mt-5">
-   
         <h2 className="text-red-500 text-2xl font-bold text-center pb-3">
           MÀN HÌNH
         </h2>
@@ -180,26 +180,27 @@ function Oder_ticket(props) {
             </div>
           </Box>
           <Box className="flex-1">
-          <div className="flex md:justify-end justify-center">
-          {handleRooms?.map((doc) => (
-            <div className="p-3" key={doc}>
-              <button
-                onClick={() => {
-                  handleDesign();
-                  setIdChair(getObjectById(doc, list_rooms)?.chairs);
-                  handleChooseRoom(doc);
-                }}
-                className={`px-4 py-2 rounded-md ${
-                  booking.handleRooms === doc
-                    ? "bg-green-500 text-white hover:bg-green-600"
-                    : "bg-red-500 text-white hover:bg-red-600"
-                }`}
-              >
-                {getObjectById(doc, list_rooms)?.name || "Tên không xác định"}
-              </button>
+            <div className="flex md:justify-end justify-center">
+              {handleRooms?.map((doc) => (
+                <div className="p-3" key={doc}>
+                  <button
+                    onClick={() => {
+                      handleDesign();
+                      setIdChair(getObjectById(doc, list_rooms)?.chairs);
+                      handleChooseRoom(doc);
+                    }}
+                    className={`px-4 py-2 rounded-md ${
+                      booking.handleRooms === doc
+                        ? "bg-green-500 text-white hover:bg-green-600"
+                        : "bg-red-500 text-white hover:bg-red-600"
+                    }`}
+                  >
+                    {getObjectById(doc, list_rooms)?.name ||
+                      "Tên không xác định"}
+                  </button>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
           </Box>
         </Box>
       </div>

@@ -125,7 +125,6 @@ function Performer(props) {
   //#region Search
   const filterPerfor = list_performer.filter(
     (perfor) =>
-      // perfor.name.toLowerCase().includes(search.toLocaleLowerCase());
       perfor.name.toLowerCase().includes(search.toLocaleLowerCase()) ||
       perfor.information.toLowerCase().includes(search.toLocaleLowerCase())
   );
@@ -211,7 +210,11 @@ function Performer(props) {
                     <TableCell align="center">
                       <img className="w-20 m-auto" src={perfor.imgUrl} alt="" />
                     </TableCell>
-                    <TableCell align="center">{perfor.information}</TableCell>
+                    <TableCell align="center">
+                      {perfor.information.length > 50
+                        ? `${perfor.information.substring(0, 50)}`
+                        : perfor.information}
+                    </TableCell>
                     <TableCell align="center">
                       <div className="flex justify-center">
                         <div className="mr-2">
